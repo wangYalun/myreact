@@ -1,0 +1,15 @@
+module.exports={
+	entry:[
+		'./src/main.js'
+	],
+	output:{
+		path:__dirname+'/assets/',
+		publicPath:'/assets/',
+		filename:'build.js'
+	},
+	module:{
+		loaders:[
+		{test:/\.jsx?$/,loaders:['jsx?harmony']}
+		]
+	}
+};

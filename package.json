@@ -1,0 +1,24 @@
+{
+  "name": "myreact",
+  "version": "1.0.0",
+  "description": "react test",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "keywords": [
+    "react",
+    "test"
+  ],
+  "author": "allen",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^2.2.4",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.13.2",
+    "webpack": "^1.13.1"
+  }
+}
