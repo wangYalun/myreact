@@ -51,14 +51,27 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React=__webpack_require__(2);
-	var ReactDom=__webpack_require__(39);
-	var Hello=__webpack_require__(169);
+	var React = __webpack_require__(2);
+	var ReactDom = __webpack_require__(39);
+	var Hello = __webpack_require__(169);
 
-	var CommentBox=__webpack_require__(170);
+	var CommentBox = __webpack_require__(170);
+	var TickTock = __webpack_require__(172);
+	var FancyCheckbox = __webpack_require__(173);
+	var FindDOMNode = __webpack_require__(174);
 
 
-	ReactDom.render(React.createElement(CommentBox, {pollInterval: 2000}),document.getElementById('container'));
+	ReactDom.render(
+	    React.createElement("div", null, 
+	        React.createElement(FancyCheckbox, {checked: true, onClick: console.log.bind(console)}, 
+	            "Hello world!"
+	        ), 
+	        React.createElement(FindDOMNode, null), 
+	        React.createElement(TickTock, null), 
+	        React.createElement(CommentBox, {pollInterval: 2000})
+
+	    ),
+	    document.getElementById('container'));
 
 /***/ },
 /* 2 */
@@ -30265,6 +30278,98 @@
 
 	return jQuery;
 	}));
+
+
+/***/ },
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(2);
+
+	var SetIntervalMixin = {
+	    componentWillMount: function () {
+	        this.intervals = [];
+	    },
+	    setInterval: function () {
+	        this.intervals.push(setInterval.apply(null, arguments));
+	    },
+	    componentWillUnmount: function () {
+	        this.intervals.map(clearInterval);
+	    }
+	};
+
+	var TickTock = React.createClass({displayName: "TickTock",
+	    mixins: [SetIntervalMixin], // 引用 mixin
+	    getInitialState: function () {
+	        return { seconds: 0 };
+	    },
+	    componentDidMount: function () {
+	        this.setInterval(this.tick, 1000); // 调用 mixin 的方法
+	    },
+	    tick: function () {
+	        this.setState({ seconds: this.state.seconds + 1 });
+	    },
+	    render: function () {
+	        return (
+	            React.createElement("p", null, 
+	                "React has been running for ", this.state.seconds, " seconds."
+	            )
+	        );
+	    }
+	});
+
+	module.exports = TickTock;
+
+
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(2);
+
+	var FancyCheckbox = React.createClass({displayName: "FancyCheckbox",
+	  render: function() {
+	    var fancyClass = this.props.checked ? 'FancyChecked' : 'FancyUnchecked';
+	    return (
+	      React.createElement("div", {className: fancyClass, onClick: this.props.onClick}, 
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+
+	module.exports=FancyCheckbox;
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React=__webpack_require__(2);
+
+
+
+	var MyComponent = React.createClass({displayName: "MyComponent",
+	  handleClick: function() {
+	    // Explicitly focus the text input using the raw DOM API.
+	    this.refs.myTextInput.focus();
+	  },
+	  render: function() {
+	    // The ref attribute adds a reference to the component to
+	    // this.refs when the component is mounted.
+	    return (
+	      React.createElement("div", null, 
+	        React.createElement("input", {type: "text", ref: "myTextInput"}), 
+	        React.createElement("input", {
+	          type: "button", 
+	          value: "Focus the text input", 
+	          onClick: this.handleClick}
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports=MyComponent;
 
 
 /***/ }
